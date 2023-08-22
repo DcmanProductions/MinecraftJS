@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "${modid}",
+  "version": "${version}",
+
+  "name": "${name}",
+  "description": "${description}",
+  "authors": ["${author}"],
+  "contact": {
+    "homepage": "${homepage}",
+    "sources": "${sourcecode}",
+    "issues": "${sourcecode}/issues"
+  },
+
+  "license": "${license}",
+  "icon": "${icon}",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "chase.minecraft.architectury.modtemplate.fabric.ModTemplateFabric"
+    ]
+  },
+  "mixins": [
+    "mod-template.mixins.json",
+    "mod-template-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader}",
+    "fabric-api": ">=${api}",
+    "architectury": ">=${architectury}",
+    "minecraft": ">=${minecraft}"
+  }
+}
