@@ -65,3 +65,7 @@ allprojects {
         withSourcesJar()
     }
 }
+
+dependencies {
+    implementation 'org.graalvm.js:js:23.0.1'
+}

@@ -18,17 +18,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "chase.minecraft.architectury.modtemplate.fabric.ModTemplateFabric"
+      "chase.minecraft.architectury.minecraftjs.fabric.MinecraftJSFabric"
     ]
   },
   "mixins": [
-    "mod-template.mixins.json",
-    "mod-template-common.mixins.json"
+    "minecraftjs.mixins.json",
+    "minecraftjs-common.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=${loader}",
     "fabric-api": ">=${api}",
-    "architectury": ">=${architectury}",
     "minecraft": ">=${minecraft}"
   }
 }
