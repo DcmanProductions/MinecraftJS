@@ -22,12 +22,13 @@ dependencies {
      modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
     // Comment to disable architectury api
-//     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
     modImplementation "maven.modrinth:modmenu:${rootProject.modmenu}"
+    extraLibs "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 }
 
 processResources {
@@ -53,18 +54,26 @@ processResources {
 }
 
 shadowJar {
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier.set("dev-shadow")
+    configurations = [project.configurations.shadowCommon, project.configurations.extraLibs]
+    archiveClassifier.set("dev-shadow");
+    mergeServiceFiles()
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 remapJar {
     inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set(null)
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 jar {
     archiveClassifier.set("dev")
+
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 sourcesJar {

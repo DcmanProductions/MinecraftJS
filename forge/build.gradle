@@ -17,7 +17,8 @@ configurations {
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
     // Remove the next line if you don't want to depend on the API
-//    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    extraLibs "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
@@ -45,20 +46,27 @@ processResources {
 }
 
 shadowJar {
+    mergeServiceFiles();
     exclude "fabric.mod.json"
-
-    configurations = [project.configurations.shadowCommon]
+    configurations = [project.configurations.shadowCommon, project.configurations.extraLibs]
     archiveClassifier.set("dev-shadow")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 remapJar {
     inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     archiveClassifier.set(null)
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 jar {
     archiveClassifier.set("dev")
+
+    from {
+        configurations.extraLibs.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 sourcesJar {
